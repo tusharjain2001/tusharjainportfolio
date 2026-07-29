@@ -14,7 +14,7 @@ function MaskLine({ children, delay = 0, className = "" }) {
   return (
     <span className="mask-line">
       <motion.span
-        initial={{ y: "110%" }}
+        initial={{ y: "140%" }}
         animate={{ y: 0 }}
         transition={{ duration: 1.05, delay, ease: EASE }}
         className={`block ${className}`}

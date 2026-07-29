@@ -41,7 +41,7 @@ export default function SectionHeading({ index, title, accent, subtitle }) {
               viewport={{ once: true, margin: "-80px" }}
             >
               <motion.span
-                variants={{ hidden: { y: "110%" }, visible: { y: 0 } }}
+                variants={{ hidden: { y: "140%" }, visible: { y: 0 } }}
                 transition={{ duration: 0.9, delay: 0.12, ease: EASE }}
                 className="block"
               >

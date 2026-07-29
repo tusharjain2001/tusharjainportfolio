@@ -139,9 +139,9 @@ export default function Navbar() {
                   <motion.a
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    initial={{ y: "110%" }}
+                    initial={{ y: "140%" }}
                     animate={{ y: 0 }}
-                    exit={{ y: "110%" }}
+                    exit={{ y: "140%" }}
                     transition={{
                       duration: 0.7,
                       delay: 0.06 * i,

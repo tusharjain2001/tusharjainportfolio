@@ -298,10 +298,18 @@ body {
    Motion primitives
    --------------------------------------------------------------- */
 
-/* Wrapper that clips a child sliding up into place. */
+/* Wrapper that clips a child sliding up into place.
+   `.display` sets line-height: 0.92, which is shorter than the font's
+   descender reach — so without the padding this mask cuts the tail off every
+   'g', 'y' and 'p'. The padding extends the clip box (overflow clips at the
+   padding edge) and the matching negative margin cancels it, leaving layout
+   untouched. Children must start below 125% for the hidden state to still
+   hide them; the ones in this project use 140%. */
 .mask-line {
   display: block;
   overflow: hidden;
+  padding-bottom: 0.25em;
+  margin-bottom: -0.25em;
 }
 
 .edge-fade {
