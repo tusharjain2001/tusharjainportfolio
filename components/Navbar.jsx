@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { navLinks, profile } from "@/lib/data";
+import { useMagnetic } from "@/lib/useMagnetic";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -10,6 +11,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#home");
+  const talkBtn = useMagnetic(0.25);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
     stiffness: 140,
@@ -94,8 +96,9 @@ export default function Navbar() {
           </ul>
 
           <a
+            ref={talkBtn}
             href={`mailto:${profile.email}`}
-            className="text-bone hairline hidden rounded-full border px-5 py-2 text-[13px] transition-colors duration-300 hover:border-amber hover:text-amber md:inline-block"
+            className="text-bone hairline magnetic hidden rounded-full border px-5 py-2 text-[13px] transition-colors duration-300 hover:border-amber hover:text-amber md:inline-block"
           >
             Let&rsquo;s talk
           </a>

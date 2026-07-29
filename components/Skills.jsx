@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { skills } from "@/lib/data";
+import { practices, skills } from "@/lib/data";
 import SectionHeading from "./SectionHeading";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -10,13 +10,13 @@ const allTech = skills.flatMap((g) => g.items);
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative py-28 md:py-36">
+    <section id="skills" className="relative py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading
           index="04 / Toolkit"
           title="What I build"
           accent="with"
-          subtitle="A deliberately small stack. I'd rather know a few tools deeply than list twenty."
+          subtitle="A deliberately small stack — I'd rather know a few tools deeply than list twenty — and the work I get hired to do with it."
         />
 
         <div>
@@ -45,6 +45,28 @@ export default function Skills() {
             </motion.div>
           ))}
         </div>
+
+        {/* Services rather than tools — the phrasing clients search with. */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-70px" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mt-14"
+        >
+          <p className="eyebrow">Hired for</p>
+
+          <ul className="mt-6 flex flex-wrap gap-x-3 gap-y-3">
+            {practices.map((p) => (
+              <li
+                key={p}
+                className="hairline text-sand hover:border-amber/40 hover:text-bone rounded-full border px-4 py-2 text-sm transition-colors duration-300"
+              >
+                {p}
+              </li>
+            ))}
+          </ul>
+        </motion.div>
       </div>
 
       {/* endless strip — a bit of movement to break up the static rows */}

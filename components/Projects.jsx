@@ -1,10 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { projects } from "@/lib/data";
+import { endorsements, freelance, projects } from "@/lib/data";
 import SectionHeading from "./SectionHeading";
+import WorkIndex from "./WorkIndex";
 
 const EASE = [0.22, 1, 0.36, 1];
+
+const featured = projects.filter((p) => p.featured);
+const rest = projects.filter((p) => !p.featured);
 
 function Project({ project, index }) {
   return (
@@ -88,20 +92,59 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative mx-auto max-w-7xl px-6 py-28 md:py-36"
+      className="relative mx-auto max-w-7xl px-6 py-20 md:py-24"
     >
       <SectionHeading
         index="03 / Work"
         title="Selected"
         accent="projects"
-        subtitle="Three builds where the measurable outcome mattered as much as the interface."
+        subtitle="The builds where the measurable outcome mattered as much as the interface — followed by everything else I've shipped."
       />
 
       <div>
-        {projects.map((project, i) => (
+        {featured.map((project, i) => (
           <Project key={project.title} project={project} index={i} />
         ))}
       </div>
+
+      <WorkIndex projects={rest} />
+
+      {/* Client-selected traits, not self-assessment — worth more than
+          anything I could write about myself here. */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-70px" }}
+        transition={{ duration: 0.8, ease: EASE }}
+        className="mt-20"
+      >
+        <p className="eyebrow">What clients said afterwards</p>
+
+        <ul className="mt-7 flex flex-wrap gap-x-3 gap-y-3">
+          {endorsements.map((e) => (
+            <li
+              key={e.label}
+              className="hairline text-sand hover:border-amber/40 hover:text-bone rounded-full border px-4 py-2 text-xs transition-colors duration-300"
+            >
+              {e.label}
+              {e.count > 1 && (
+                <span className="text-amber ml-1.5">×{e.count}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={freelance.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-stone hover:text-sand mt-7 inline-block text-xs transition-colors duration-300"
+        >
+          <span className="u-link">
+            Selected by clients on completed {freelance.platform} contracts
+          </span>
+        </a>
+      </motion.div>
     </section>
   );
 }

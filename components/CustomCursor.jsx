@@ -23,37 +23,59 @@ export default function CustomCursor() {
     const current = { x: -100, y: -100 };
     let scale = 1;
     let targetScale = 1;
-    let raf;
+    let raf = 0;
+
+    // The loop parks itself once the disc has caught up. Left running, a
+    // mix-blend element repaints every frame forever, even on an idle page.
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(loop);
+    };
 
     const onMove = (e) => {
       target.x = e.clientX;
       target.y = e.clientY;
+      wake();
     };
 
     const onOver = (e) => {
       targetScale = e.target.closest("a, button, [data-cursor='hover']")
         ? 3.2
         : 1;
+      wake();
     };
 
-    const onDown = () => (targetScale *= 0.75);
-    const onUp = () => (targetScale = targetScale < 2 ? 1 : 3.2);
+    const onDown = () => {
+      targetScale *= 0.75;
+      wake();
+    };
+    const onUp = () => {
+      targetScale = targetScale < 2 ? 1 : 3.2;
+      wake();
+    };
 
     const loop = () => {
-      current.x += (target.x - current.x) * 0.18;
-      current.y += (target.y - current.y) * 0.18;
-      scale += (targetScale - scale) * 0.14;
+      const dx = target.x - current.x;
+      const dy = target.y - current.y;
+      const ds = targetScale - scale;
+
+      current.x += dx * 0.18;
+      current.y += dy * 0.18;
+      scale += ds * 0.14;
+
       if (ref.current) {
         ref.current.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%) scale(${scale})`;
       }
-      raf = requestAnimationFrame(loop);
+
+      const settled =
+        Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1 && Math.abs(ds) < 0.002;
+      raf = settled ? 0 : requestAnimationFrame(loop);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseover", onOver, { passive: true });
     window.addEventListener("mousedown", onDown, { passive: true });
     window.addEventListener("mouseup", onUp, { passive: true });
-    raf = requestAnimationFrame(loop);
+    wake();
 
     return () => {
       window.removeEventListener("mousemove", onMove);

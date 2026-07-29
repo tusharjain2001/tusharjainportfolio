@@ -1,51 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { profile } from "@/lib/data";
+import { motion } from "framer-motion";
+import { profile, workingStyle } from "@/lib/data";
 import SectionHeading from "./SectionHeading";
 
 const EASE = [0.22, 1, 0.36, 1];
 
-function Counter({ value, suffix }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 1600;
-    const start = performance.now();
-    let raf;
-    const tick = (now) => {
-      const t = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - t, 4);
-      setDisplay(Math.round(value * eased));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, value]);
-
-  return (
-    <span ref={ref} className="display text-bone text-5xl md:text-6xl">
-      {display}
-      <span className="text-amber">{suffix}</span>
-    </span>
-  );
-}
-
 const facts = [
   { k: "Role", v: "Frontend Engineer" },
+  { k: "Currently", v: "Freelancing — remote" },
   { k: "Based in", v: profile.location },
   { k: "Education", v: "B.Tech CSE, Amity University" },
   { k: "Focus", v: "React · Next.js · TypeScript" },
-  { k: "Status", v: "Open to work" },
+  { k: "Status", v: "Taking new projects" },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="relative mx-auto max-w-7xl px-6 py-28 md:py-36">
+    <section id="about" className="relative mx-auto max-w-7xl px-6 py-20 md:py-24">
       <SectionHeading
         index="01 / About"
         title="Design and"
@@ -75,6 +47,22 @@ export default function About() {
               </p>
             ))}
           </div>
+
+          {/* what clients get, in their terms rather than mine */}
+          <div className="mt-12">
+            <p className="eyebrow">How I work</p>
+
+            <ul className="mt-6 space-y-4">
+              {workingStyle.map((point) => (
+                <li key={point} className="flex items-baseline gap-4">
+                  <span className="bg-amber h-1 w-1 shrink-0 translate-y-[-0.2rem] rounded-full" />
+                  <span className="text-bone text-sm leading-relaxed">
+                    {point}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </motion.div>
 
         {/* fact table */}
@@ -97,22 +85,6 @@ export default function About() {
         </motion.dl>
       </div>
 
-      {/* stats */}
-      <div className="mt-24 grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-        {profile.stats.map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, delay: i * 0.08, ease: EASE }}
-            className="hairline border-t pt-5"
-          >
-            <Counter value={stat.value} suffix={stat.suffix} />
-            <p className="eyebrow mt-3">{stat.label}</p>
-          </motion.div>
-        ))}
-      </div>
     </section>
   );
 }

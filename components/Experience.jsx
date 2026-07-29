@@ -10,13 +10,13 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="relative mx-auto max-w-7xl px-6 py-28 md:py-36"
+      className="relative mx-auto max-w-7xl px-6 py-20 md:py-24"
     >
       <SectionHeading
         index="02 / Career"
         title="Where I've"
         accent="worked"
-        subtitle="Two years across a UK Web3 startup and an Indian product team — shipping to real users in both."
+        subtitle="A UK Web3 startup, an Indian product team, and now my own client work — shipping to real users throughout."
       />
 
       <div>

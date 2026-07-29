@@ -43,7 +43,7 @@ export const metadata = {
   openGraph: {
     title: "Tushar Jain — Frontend Engineer",
     description:
-      "Frontend engineer building fast, precise interfaces. React · Next.js · TypeScript · Three.js",
+      "Frontend engineer building fast, precise interfaces. React · Next.js · TypeScript · Tailwind",
     type: "website",
     locale: "en_US",
   },

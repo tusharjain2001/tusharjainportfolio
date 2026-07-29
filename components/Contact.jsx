@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { profile } from "@/lib/data";
+import { freelance, profile } from "@/lib/data";
 import SectionHeading from "./SectionHeading";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -13,10 +14,26 @@ const socials = [
 ];
 
 export default function Contact() {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const id = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(id);
+  }, [copied]);
+
+  // Copy beats a mailto for anyone not using a desktop mail client, so the
+  // address does both: click copies, the mailto stays as the middle-click path.
+  const copyEmail = (e) => {
+    if (!navigator.clipboard) return;
+    e.preventDefault();
+    navigator.clipboard.writeText(profile.email).then(() => setCopied(true));
+  };
+
   return (
     <section
       id="contact"
-      className="relative mx-auto max-w-7xl px-6 py-28 md:py-36"
+      className="relative mx-auto max-w-7xl px-6 py-20 md:py-24"
     >
       <SectionHeading index="05 / Contact" title="Let’s build" accent="something" />
 
@@ -36,10 +53,21 @@ export default function Contact() {
 
           <a
             href={`mailto:${profile.email}`}
+            onClick={copyEmail}
             className="display text-bone hover:text-amber mt-10 block text-[clamp(1.6rem,4.5vw,3.25rem)] transition-colors duration-300"
           >
             <span className="u-link">{profile.email}</span>
           </a>
+
+          <p className="eyebrow mt-4 h-4">
+            <span
+              className={`transition-colors duration-300 ${
+                copied ? "text-amber" : "text-stone"
+              }`}
+            >
+              {copied ? "Copied to clipboard" : "Click to copy"}
+            </span>
+          </p>
 
           <a
             href={`tel:${profile.phone.replace(/\s/g, "")}`}
@@ -47,6 +75,32 @@ export default function Contact() {
           >
             <span className="u-link">{profile.phone}</span>
           </a>
+
+          {/* freelance standing — the part a prospective client actually wants */}
+          <div className="hairline mt-14 max-w-xl border-t pt-8">
+            <div className="grid grid-cols-3 gap-6">
+              {freelance.proof.map((p) => (
+                <div key={p.label}>
+                  <p className="display text-bone text-3xl md:text-4xl">
+                    {p.value}
+                    <span className="text-amber">{p.suffix}</span>
+                  </p>
+                  <p className="eyebrow mt-2 leading-snug">{p.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href={freelance.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-stone hover:text-sand mt-7 inline-block text-xs transition-colors duration-300"
+            >
+              <span className="u-link">
+                {freelance.badge} on {freelance.platform}
+              </span>
+            </a>
+          </div>
         </motion.div>
 
         <motion.div

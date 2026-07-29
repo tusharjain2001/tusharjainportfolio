@@ -1,15 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { profile } from "@/lib/data";
 import { useReducedMotion } from "@/lib/useMediaQuery";
-
-const HeroScene = dynamic(() => import("./three/HeroScene"), {
-  ssr: false,
-  loading: () => null,
-});
+import HeroCard from "./HeroCard";
+import { useMagnetic } from "@/lib/useMagnetic";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -39,9 +35,12 @@ function RollingRole({ roles }) {
   }, [roles.length]);
 
   return (
-    // Fixed height + reserved width, and the two roles overlap during the
-    // swap — otherwise the line collapses to nothing between them.
-    <span className="relative inline-block h-[1.5em] min-w-[11rem] overflow-hidden align-bottom">
+    // Height is pinned to the parent's line-height (text-lg → 1.75rem) so this
+    // box and the plain text beside it are the same size, and the parent can
+    // centre them. Baseline alignment can't work here: `overflow: hidden`
+    // makes an inline-block's baseline its bottom margin edge, which sits
+    // ~6px below the text baseline and lifts the role off the line.
+    <span className="relative inline-block h-7 min-w-44 overflow-hidden">
       <AnimatePresence initial={false}>
         <motion.span
           key={i}
@@ -59,47 +58,20 @@ function RollingRole({ roles }) {
 }
 
 export default function Hero() {
-  const sectionRef = useRef(null);
-  const [inView, setInView] = useState(true);
   const reduced = useReducedMotion();
-
-  // stop the render loop entirely once the hero scrolls away
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.02 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const workBtn = useMagnetic(0.28);
+  const contactBtn = useMagnetic(0.28);
 
   return (
     <section
-      ref={sectionRef}
       id="home"
       className="relative flex min-h-screen w-full items-center overflow-hidden"
     >
-      {/* warm bloom sitting behind the form */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-1/2 right-0 h-160 w-160 -translate-y-1/2 translate-x-1/4 rounded-full bg-clay/20 blur-[130px] lg:translate-x-0"
-      />
+      {/* warm bloom behind the card — a gradient, not a blurred layer, so the
+          compositor never has to rasterise a 640px blur radius */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 glow-hero" />
 
-      {/* 3D form: full-bleed and dimmed on mobile, right-hand column on desktop */}
-      <div className="absolute inset-0 opacity-25 lg:left-[44%] lg:opacity-100">
-        <HeroScene active={inView} reduced={reduced} />
-      </div>
-
-      {/* On small screens the form sits directly behind the copy, so it needs a
-          scrim to keep body text readable. Desktop has the two side by side. */}
-      <div
-        aria-hidden
-        className="from-ink via-ink/85 pointer-events-none absolute inset-0 bg-linear-to-r to-transparent lg:hidden"
-      />
-
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-6 py-32 lg:grid-cols-12">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 py-32 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-7">
           {/* availability */}
           <motion.div
@@ -115,7 +87,7 @@ export default function Hero() {
             <span className="eyebrow text-sand">Available for new work</span>
           </motion.div>
 
-          <h1 className="display text-[clamp(3.25rem,10.5vw,9rem)] text-bone">
+          <h1 className="display text-bone text-[clamp(3rem,9vw,7.5rem)]">
             <MaskLine delay={0.2}>Frontend</MaskLine>
             <MaskLine delay={0.32}>
               <em className="text-amber">Engineer</em>
@@ -134,7 +106,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
-            className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-lg"
+            className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-lg"
           >
             <span className="text-bone">{profile.name}</span>
             <span className="text-stone">—</span>
@@ -156,7 +128,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 1.05, ease: EASE }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
-            <a href="#projects" className="btn btn-solid">
+            <a ref={workBtn} href="#projects" className="btn btn-solid magnetic">
               Selected work
               <svg
                 viewBox="0 0 24 24"
@@ -168,10 +140,15 @@ export default function Hero() {
                 <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
-            <a href="#contact" className="btn btn-ghost">
+            <a ref={contactBtn} href="#contact" className="btn btn-ghost magnetic">
               Get in touch
             </a>
           </motion.div>
+        </div>
+
+        {/* identity card — takes the slot the 3D form used to occupy */}
+        <div className="hidden sm:block lg:col-span-5">
+          <HeroCard reduced={reduced} />
         </div>
       </div>
 
