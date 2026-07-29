@@ -35,8 +35,10 @@ function Card({ project, index }) {
               alt=""
               fill
               sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
-              /* lazy by default — these sit well below the fold */
-              className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+              /* lazy by default — these sit well below the fold.
+                 Held back a little so eleven bright light-mode screenshots
+                 don't overpower a near-black page; full colour on hover. */
+              className="object-cover object-top brightness-[0.82] saturate-[0.9] transition-[transform,filter] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] group-hover:brightness-100 group-hover:saturate-100"
             />
           </div>
         )}
