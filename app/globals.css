@@ -1,26 +1,247 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* ---- surfaces: warm near-black, never blue-black ---- */
+  --color-ink: #0e0d0b;
+  --color-ink-2: #14120f;
+  --color-ink-3: #1c1915;
+  --color-ink-4: #262119;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ---- type ---- */
+  --color-bone: #f2ede3;
+  --color-sand: #a79e8e;
+  --color-stone: #6f675a;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ---- accent ---- */
+  --color-amber: #e0803a;
+  --color-ember: #c25a2e;
+  --color-clay: #8a5a3c;
+
+  --font-display: var(--font-instrument), Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-jb), ui-monospace, monospace;
+
+  --animate-drift: drift 22s ease-in-out infinite;
+  --animate-marquee: marquee 38s linear infinite;
+
+  @keyframes drift {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -18px, 0); }
+  }
+  @keyframes marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
   }
 }
 
+html {
+  scroll-behavior: smooth;
+  /* keeps anchored sections from tucking under the fixed header */
+  scroll-padding-top: 6rem;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(224, 128, 58, 0.28);
+  color: #fff;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3a332a var(--color-ink);
+}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-ink); }
+::-webkit-scrollbar-thumb {
+  background: #3a332a;
+  border: 3px solid var(--color-ink);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: #4d4437; }
+
+@media (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor a,
+  body.has-cursor button {
+    cursor: none;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Typography
+   --------------------------------------------------------------- */
+
+/* Big editorial headings: serif, tight, optically de-tracked. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+
+/* Small all-caps labels. Kept sparse — one per section at most. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+}
+
+.balance { text-wrap: balance; }
+.pretty { text-wrap: pretty; }
+
+/* ---------------------------------------------------------------
+   Texture — a faint film grain over everything. This is the single
+   biggest thing that stops flat dark UI reading as "generated".
+   --------------------------------------------------------------- */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------------------------
+   Rules & surfaces
+   --------------------------------------------------------------- */
+.hairline { border-color: rgba(242, 237, 227, 0.09); }
+
+.rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(242, 237, 227, 0.16),
+    rgba(242, 237, 227, 0.03) 60%,
+    transparent
+  );
+}
+
+.panel {
+  background: linear-gradient(
+    180deg,
+    rgba(242, 237, 227, 0.035),
+    rgba(242, 237, 227, 0.012)
+  );
+  border: 1px solid rgba(242, 237, 227, 0.08);
+  transition: border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.panel:hover {
+  border-color: rgba(224, 128, 58, 0.34);
+  background: linear-gradient(
+    180deg,
+    rgba(224, 128, 58, 0.05),
+    rgba(242, 237, 227, 0.012)
+  );
+}
+
+.nav-blur {
+  background: rgba(14, 13, 11, 0.72);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+/* ---------------------------------------------------------------
+   Links & buttons
+   --------------------------------------------------------------- */
+
+/* Underline grows from the left on hover, retracts to the right on exit. */
+.u-link {
+  position: relative;
+  display: inline-block;
+}
+.u-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.u-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Solid button whose fill wipes upward on hover. */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 999px;
+  padding: 0.9rem 1.75rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-amber);
+  transform: translateY(101%);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn:hover::before { transform: translateY(0); }
+
+.btn-solid {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+.btn-solid:hover { color: var(--color-ink); }
+
+.btn-ghost {
+  border: 1px solid rgba(242, 237, 227, 0.18);
+  color: var(--color-bone);
+}
+.btn-ghost:hover {
+  color: var(--color-ink);
+  border-color: var(--color-amber);
+}
+
+/* ---------------------------------------------------------------
+   Motion primitives
+   --------------------------------------------------------------- */
+
+/* Wrapper that clips a child sliding up into place. */
+.mask-line {
+  display: block;
+  overflow: hidden;
+}
+
+.edge-fade {
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

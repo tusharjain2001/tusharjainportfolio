@@ -1,0 +1,107 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { projects } from "@/lib/data";
+import SectionHeading from "./SectionHeading";
+
+const EASE = [0.22, 1, 0.36, 1];
+
+function Project({ project, index }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-70px" }}
+      transition={{ duration: 0.85, delay: index * 0.08, ease: EASE }}
+      data-cursor="hover"
+      className="group hairline relative border-t last:border-b"
+    >
+      {/* warm wash rises on hover */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-linear-to-t from-amber/[0.07] to-transparent transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-100"
+      />
+
+      <div className="relative grid gap-8 py-12 md:grid-cols-12 md:gap-10 md:py-14">
+        {/* rail */}
+        <div className="flex items-baseline gap-4 md:col-span-3 md:flex-col md:gap-2">
+          <span className="eyebrow group-hover:text-amber transition-colors duration-500">
+            ({String(index + 1).padStart(2, "0")})
+          </span>
+          <span className="text-xs text-stone">{project.year}</span>
+          <span className="text-xs text-stone md:mt-1">{project.role}</span>
+        </div>
+
+        {/* body */}
+        <div className="md:col-span-9">
+          <div className="flex items-start justify-between gap-6">
+            <div>
+              <h3 className="display text-bone text-[clamp(2rem,4vw,3.25rem)] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
+                {project.title}
+              </h3>
+              <p className="text-sand mt-1 text-sm">{project.subtitle}</p>
+            </div>
+
+            <span className="text-stone group-hover:text-amber mt-2 shrink-0 transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1">
+              <svg
+                viewBox="0 0 24 24"
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.25"
+              >
+                <path d="M7 17 17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </div>
+
+          <p className="pretty mt-6 max-w-2xl leading-relaxed text-sand">
+            {project.description}
+          </p>
+
+          {/* metrics */}
+          <div className="mt-9 grid max-w-2xl grid-cols-3 gap-6">
+            {project.metrics.map((m) => (
+              <div key={m.label}>
+                <p className="display text-bone text-2xl md:text-3xl">
+                  {m.value}
+                </p>
+                <p className="eyebrow mt-1.5 leading-snug">{m.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-9 flex flex-wrap gap-x-5 gap-y-2">
+            {project.tech.map((t) => (
+              <span key={t} className="eyebrow text-stone">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+export default function Projects() {
+  return (
+    <section
+      id="projects"
+      className="relative mx-auto max-w-7xl px-6 py-28 md:py-36"
+    >
+      <SectionHeading
+        index="03 / Work"
+        title="Selected"
+        accent="projects"
+        subtitle="Three builds where the measurable outcome mattered as much as the interface."
+      />
+
+      <div>
+        {projects.map((project, i) => (
+          <Project key={project.title} project={project} index={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
