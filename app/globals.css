@@ -194,6 +194,97 @@ body {
   opacity: 1;
 }
 
+/* ---------------------------------------------------------------
+   Traced border — a bright arc that runs the perimeter on hover.
+
+   The angle is a registered custom property: without @property a custom
+   property is just a string, so a keyframe on it would jump rather than
+   interpolate. The ring itself is a conic gradient clipped to a 1.5px band
+   by compositing a content-box mask against a border-box one.
+   --------------------------------------------------------------- */
+@property --spin {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes trace {
+  to {
+    --spin: 360deg;
+  }
+}
+
+.trace-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0deg,
+    transparent 250deg,
+    rgba(224, 128, 58, 0.35) 300deg,
+    rgba(224, 128, 58, 0.9) 336deg,
+    #f2ede3 350deg,
+    rgba(224, 128, 58, 0.6) 357deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.trace-border:hover::after {
+  opacity: 1;
+  animation: trace 2.2s linear infinite;
+}
+
+/* Faint warm bloom that fades up behind the traced edge. */
+.trace-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  box-shadow: inset 0 0 40px -12px rgba(224, 128, 58, 0.55);
+}
+.trace-border:hover::before {
+  opacity: 1;
+}
+
+/* Circular window that reveals the lit copy of the toolkit. The mask is
+   static — it never changes, so the browser rasterises it once and every
+   subsequent frame is a pure compositor translate. Animating a mask's
+   position instead would repaint the whole block on every pointer move. */
+.torch {
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    #000 28%,
+    rgba(0, 0, 0, 0.55) 55%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    circle at center,
+    #000 28%,
+    rgba(0, 0, 0, 0.55) 55%,
+    transparent 72%
+  );
+  transition: opacity 0.45s ease;
+}
+
 /* Hero identity card. Opaque enough that the orbit ring behind it reads as a
    halo around the card rather than a scratch across the copy. */
 .panel-card {
