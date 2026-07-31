@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { profile, workingStyle } from "@/lib/data";
+import { reveal } from "@/lib/motion";
 import SectionHeading from "./SectionHeading";
-
-const EASE = [0.22, 1, 0.36, 1];
 
 const facts = [
   { k: "Role", v: "Frontend Engineer" },
@@ -28,10 +27,7 @@ export default function About() {
       <div className="grid gap-16 lg:grid-cols-12">
         {/* narrative */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.9, ease: EASE }}
+          {...reveal({ y: 30, rotate: 7, duration: 0.9 })}
           className="lg:col-span-7"
         >
           <p className="display text-bone text-[clamp(1.5rem,2.6vw,2.1rem)] leading-[1.25]">
@@ -67,10 +63,7 @@ export default function About() {
 
         {/* fact table */}
         <motion.dl
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
+          {...reveal({ y: 30, rotate: 7, duration: 0.9, delay: 0.15 })}
           className="lg:col-span-5 lg:pt-2"
         >
           {facts.map((f) => (

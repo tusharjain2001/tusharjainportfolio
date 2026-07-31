@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { achievements, badges } from "@/lib/data";
+import { reveal } from "@/lib/motion";
 import Counter from "./Counter";
-
-const EASE = [0.22, 1, 0.36, 1];
 
 /**
  * Sits directly under the hero, before anyone has to scroll far. The rest of
@@ -29,10 +28,7 @@ export default function Proof() {
           {achievements.map((a, i) => (
             <motion.div
               key={a.headline}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-70px" }}
-              transition={{ duration: 0.8, delay: i * 0.12, ease: EASE }}
+              {...reveal({ y: 28, rotate: 10, delay: i * 0.12 })}
               /* flex column so the source line sits on a shared baseline no
                  matter how many lines the detail copy runs to */
               className="hairline flex h-full flex-col md:border-l md:pl-8 md:first:border-l-0 md:first:pl-0"

@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { freelance, profile } from "@/lib/data";
+import { reveal } from "@/lib/motion";
 import SectionHeading from "./SectionHeading";
-
-const EASE = [0.22, 1, 0.36, 1];
 
 const socials = [
   { label: "GitHub", href: profile.links.github },
@@ -39,10 +38,7 @@ export default function Contact() {
 
       <div className="grid gap-14 lg:grid-cols-12">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.85, ease: EASE }}
+          {...reveal({ y: 28, rotate: 7, duration: 0.85 })}
           className="lg:col-span-7"
         >
           <p className="pretty max-w-xl leading-relaxed text-sand">
@@ -104,10 +100,7 @@ export default function Contact() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
+          {...reveal({ y: 28, rotate: 7, duration: 0.85, delay: 0.15 })}
           className="lg:col-span-5"
         >
           <p className="eyebrow">Elsewhere</p>

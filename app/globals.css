@@ -166,10 +166,14 @@ body {
     color 0.4s ease, border-color 0.4s ease;
 }
 
+/* Border and background are listed because `.tilt` is declared after `.panel`
+   and a bare `transition: transform` would win the shorthand, killing the
+   panel's hover fade on any element carrying both classes. */
 .tilt {
   transform: perspective(1100px);
-  transform-style: preserve-3d;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Highlight that follows the cursor across the card face. */

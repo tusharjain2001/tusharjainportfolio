@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { experience } from "@/lib/data";
+import { reveal } from "@/lib/motion";
 import SectionHeading from "./SectionHeading";
-
-const EASE = [0.22, 1, 0.36, 1];
 
 export default function Experience() {
   return (
@@ -23,10 +22,7 @@ export default function Experience() {
         {experience.map((job, i) => (
           <motion.article
             key={job.company}
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, delay: i * 0.1, ease: EASE }}
+            {...reveal({ y: 32, rotate: 8, delay: i * 0.1 })}
             className="group hairline border-t py-10 last:border-b md:py-12"
           >
             <div className="grid gap-6 md:grid-cols-12 md:gap-10">

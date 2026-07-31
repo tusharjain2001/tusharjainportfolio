@@ -2,31 +2,32 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-
-const EASE = [0.22, 1, 0.36, 1];
+import { reveal } from "@/lib/motion";
+import { useTilt } from "@/lib/useMagnetic";
 
 function Card({ project, index }) {
   const linked = Boolean(project.link);
   const Tag = linked ? "a" : "div";
+  // shallower than the hero card — eleven of these tilting hard would be noise
+  const tilt = useTilt(4, 10);
 
   return (
     <motion.li
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
       /* capped so a long grid doesn't stagger for ten seconds */
-      transition={{
-        duration: 0.55,
+      {...reveal({
+        y: 18,
+        rotate: 7,
+        duration: 0.6,
         delay: Math.min(index, 8) * 0.05,
-        ease: EASE,
-      }}
+      })}
     >
       <Tag
+        ref={tilt}
         {...(linked
           ? { href: project.link, target: "_blank", rel: "noopener noreferrer" }
           : {})}
         data-cursor={linked ? "hover" : undefined}
-        className="panel group flex h-full flex-col rounded-xl p-6 hover:-translate-y-0.5"
+        className="panel tilt tilt-shine group relative flex h-full flex-col overflow-hidden rounded-xl p-6"
       >
         {project.image && (
           <div className="hairline relative mb-5 aspect-video overflow-hidden rounded-lg border">

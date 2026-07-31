@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { practices, skills } from "@/lib/data";
+import { reveal } from "@/lib/motion";
 import SectionHeading from "./SectionHeading";
-
-const EASE = [0.22, 1, 0.36, 1];
 
 const allTech = skills.flatMap((g) => g.items);
 
@@ -23,10 +22,7 @@ export default function Skills() {
           {skills.map((group, gi) => (
             <motion.div
               key={group.category}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-70px" }}
-              transition={{ duration: 0.7, delay: gi * 0.08, ease: EASE }}
+              {...reveal({ y: 24, rotate: 8, duration: 0.7, delay: gi * 0.08 })}
               className="hairline grid gap-4 border-t py-8 last:border-b md:grid-cols-12 md:gap-10"
             >
               <h3 className="eyebrow md:col-span-3 md:pt-1">
@@ -48,10 +44,7 @@ export default function Skills() {
 
         {/* Services rather than tools — the phrasing clients search with. */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-70px" }}
-          transition={{ duration: 0.7, ease: EASE }}
+          {...reveal({ y: 24, rotate: 8, duration: 0.7 })}
           className="mt-14"
         >
           <p className="eyebrow">Hired for</p>

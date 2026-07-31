@@ -2,10 +2,9 @@
 
 import { motion } from "framer-motion";
 import { endorsements, freelance, projects } from "@/lib/data";
+import { reveal } from "@/lib/motion";
 import SectionHeading from "./SectionHeading";
 import WorkIndex from "./WorkIndex";
-
-const EASE = [0.22, 1, 0.36, 1];
 
 const featured = projects.filter((p) => p.featured);
 const rest = projects.filter((p) => !p.featured);
@@ -13,10 +12,7 @@ const rest = projects.filter((p) => !p.featured);
 function Project({ project, index }) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-70px" }}
-      transition={{ duration: 0.85, delay: index * 0.08, ease: EASE }}
+      {...reveal({ y: 36, rotate: 6, duration: 0.85, delay: index * 0.08 })}
       data-cursor="hover"
       className="group hairline relative border-t last:border-b"
     >
@@ -111,13 +107,7 @@ export default function Projects() {
 
       {/* Client-selected traits, not self-assessment — worth more than
           anything I could write about myself here. */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-70px" }}
-        transition={{ duration: 0.8, ease: EASE }}
-        className="mt-20"
-      >
+      <motion.div {...reveal({ y: 24, rotate: 6 })} className="mt-20">
         <p className="eyebrow">What clients said afterwards</p>
 
         <ul className="mt-7 flex flex-wrap gap-x-3 gap-y-3">
