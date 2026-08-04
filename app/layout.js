@@ -1,4 +1,6 @@
 import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { profile } from "@/lib/data";
+import { jsonLd } from "@/lib/schema";
 import "./globals.css";
 
 const inter = Inter({
@@ -24,7 +26,8 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://tusharjain.dev"),
+  metadataBase: new URL(profile.siteUrl),
+  alternates: { canonical: "/" },
   title: {
     default: "Tushar Jain — Frontend Engineer",
     template: "%s · Tushar Jain",
@@ -39,12 +42,32 @@ export const metadata = {
     "TypeScript",
     "Portfolio",
   ],
-  authors: [{ name: "Tushar Jain" }],
+  authors: [{ name: profile.name, url: profile.siteUrl }],
+  creator: profile.name,
+  publisher: profile.name,
+  category: "technology",
+  /* explicit rather than inherited — max-image-preview:large is what lets the
+     share card show full-width in results instead of as a thumbnail */
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     title: "Tushar Jain — Frontend Engineer",
     description:
       "Frontend engineer building fast, precise interfaces. React · Next.js · TypeScript · Tailwind",
-    type: "website",
+    url: "/",
+    siteName: profile.name,
+    type: "profile",
+    firstName: profile.firstName,
+    lastName: profile.lastName,
     locale: "en_US",
   },
   twitter: {
@@ -65,7 +88,15 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${inter.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}
     >
-      <body className="grain bg-ink min-h-full">{children}</body>
+      <body className="grain bg-ink min-h-full">
+        {/* Person + ProfilePage + the project list, as one graph. Server
+            rendered, so crawlers that don't execute JS still get it. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

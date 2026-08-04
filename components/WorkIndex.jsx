@@ -37,60 +37,63 @@ function Card({ project, index }) {
           ? { href: project.link, target: "_blank", rel: "noopener noreferrer" }
           : {})}
         data-cursor={linked ? "hover" : undefined}
-        className="trace-border group hairline relative block aspect-4/3 overflow-hidden rounded-xl border"
+        className="trace-border group hairline bg-ink-2 relative flex h-full flex-col overflow-hidden rounded-xl border"
       >
-        {project.image ? (
-          <Image
-            src={project.image}
-            alt=""
-            fill
-            sizes="(min-width: 1024px) 32vw, (min-width: 640px) 48vw, 92vw"
-            /* held back at rest so eleven bright light-mode screenshots don't
-               overpower a near-black page; full colour under the cursor */
-            className="object-cover object-top brightness-[0.82] saturate-[0.88] transition-[filter] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:brightness-105 group-hover:saturate-100"
-          />
-        ) : (
-          /* deliberate empty state, not a blank card. No title here — the
-             overlay below already carries it. */
-          <span
-            aria-hidden
-            className="bg-ink-2 absolute inset-0 flex items-center justify-center"
-          >
-            <span className="eyebrow text-stone/40">Screenshot to come</span>
-          </span>
-        )}
+        {/* 2:1 to match the captures. Anything squarer crops the sides and
+            takes the first word of the headline with it. */}
+        <div className="bg-ink-3 relative aspect-2/1 overflow-hidden">
+          {project.image ? (
+            <Image
+              src={project.image}
+              alt={`${project.title} — website homepage`}
+              fill
+              sizes="(min-width: 1024px) 32vw, (min-width: 640px) 48vw, 92vw"
+              /* held back at rest so a dozen bright light-mode screenshots
+                 don't overpower a near-black page; full colour on hover */
+              className="object-cover object-top brightness-90 saturate-[0.92] transition-[transform,filter] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] group-hover:brightness-105 group-hover:saturate-100"
+            />
+          ) : (
+            /* deliberate empty state, not a blank card */
+            <div
+              aria-hidden
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <span className="eyebrow text-stone/40">Screenshot to come</span>
+            </div>
+          )}
+        </div>
 
-        {/* Scrim: the screenshots are light and the type is bone, so the
-            bottom third has to carry weight — but it stops at 60% so the
-            image still reads as the subject of the card. */}
-        <span
-          aria-hidden
-          className="from-ink via-ink/75 pointer-events-none absolute inset-0 bg-linear-to-t from-8% via-42% to-transparent to-72% transition-opacity duration-500"
-        />
+        {/* Type sits below the image rather than on it. The screenshots are
+            busy and light; no scrim was ever going to make bone type read
+            cleanly across twelve different hero sections.
 
-        <span className="eyebrow absolute top-4 left-5 z-10 transition-colors duration-500 group-hover:text-amber">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+            Real h3/p rather than styled spans — these twelve titles are the
+            only place most of the client names appear on the page. */}
+        <div className="hairline flex flex-1 flex-col border-t p-5">
+          <div className="flex items-center justify-between gap-3">
+            <span className="eyebrow group-hover:text-amber transition-colors duration-500">
+              {String(index + 1).padStart(2, "0")}
+            </span>
 
-        {linked && (
-          <Arrow className="text-bone/70 group-hover:text-amber absolute top-4 right-5 z-10 h-4 w-4 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        )}
+            {linked && (
+              <Arrow className="text-stone group-hover:text-amber h-4 w-4 shrink-0 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            )}
+          </div>
 
-        <span className="absolute inset-x-0 bottom-0 z-10 block p-5">
-          <span className="text-bone block text-lg leading-snug">
+          <h3 className="text-bone mt-3 text-lg leading-snug">
             {project.title}
-          </span>
+          </h3>
 
-          <span className="text-sand mt-1.5 block text-sm leading-relaxed">
+          <p className="text-sand mt-1.5 text-sm leading-relaxed">
             {project.subtitle}
-          </span>
+          </p>
 
           {project.tech?.length > 0 && (
-            <span className="eyebrow mt-3 block opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            <p className="eyebrow text-stone mt-3">
               {project.tech.join(" · ")}
-            </span>
+            </p>
           )}
-        </span>
+        </div>
       </Tag>
     </motion.li>
   );
