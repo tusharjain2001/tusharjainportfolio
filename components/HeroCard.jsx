@@ -1,12 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { credentials, profile } from "@/lib/data";
+import { badges, credentials, profile } from "@/lib/data";
 import { useTilt } from "@/lib/useMagnetic";
+import Badge from "./Badge";
 
 const EASE = [0.22, 1, 0.36, 1];
-
-const STACK = ["React", "Next.js", "TypeScript", "Tailwind", "Web3"];
 
 const SOCIALS = [
   { label: "GitHub", href: profile.links.github },
@@ -53,8 +52,8 @@ export default function HeroCard({ reduced = false }) {
         </div>
 
         {/* monogram */}
-        <div className="mt-10 mb-2 text-center">
-          <span className="display text-bone text-[7rem] leading-none tracking-tight">
+        <div className="mt-7 mb-1 text-center">
+          <span className="display text-bone text-[5.5rem] leading-none tracking-tight">
             T<em className="text-amber">J</em>
           </span>
         </div>
@@ -62,7 +61,14 @@ export default function HeroCard({ reduced = false }) {
         <p className="text-bone text-center text-lg">{profile.name}</p>
         <p className="eyebrow mt-2 text-center">Frontend Engineer</p>
 
-        <div className="rule mt-8" />
+        {/* the two credentials worth leading with */}
+        <ul className="mt-6 flex flex-wrap justify-center gap-2">
+          {badges.slice(0, 2).map((b) => (
+            <Badge key={b.label} label={b.label} icon={b.icon} />
+          ))}
+        </ul>
+
+        <div className="rule mt-7" />
 
         {/* stats */}
         <dl className="grid grid-cols-2 gap-x-6 gap-y-6 py-8">
@@ -73,20 +79,6 @@ export default function HeroCard({ reduced = false }) {
             </div>
           ))}
         </dl>
-
-        <div className="rule" />
-
-        {/* stack */}
-        <ul className="flex flex-wrap gap-2 py-7">
-          {STACK.map((t) => (
-            <li
-              key={t}
-              className="hairline text-sand rounded-full border px-3 py-1 text-xs"
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
 
         <div className="rule" />
 

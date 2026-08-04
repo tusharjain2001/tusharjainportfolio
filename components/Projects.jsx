@@ -22,6 +22,17 @@ function Project({ project, index }) {
         className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-linear-to-t from-amber/[0.07] to-transparent transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-100"
       />
 
+      {/* whole row is the target; only when there's somewhere to go */}
+      {project.link && (
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${project.title} — open site`}
+          className="absolute inset-0 z-10"
+        />
+      )}
+
       <div className="relative grid gap-8 py-12 md:grid-cols-12 md:gap-10 md:py-14">
         {/* rail */}
         <div className="flex items-baseline gap-4 md:col-span-3 md:flex-col md:gap-2">
@@ -42,17 +53,19 @@ function Project({ project, index }) {
               <p className="text-sand mt-1 text-sm">{project.subtitle}</p>
             </div>
 
-            <span className="text-stone group-hover:text-amber mt-2 shrink-0 transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1">
-              <svg
-                viewBox="0 0 24 24"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.25"
-              >
-                <path d="M7 17 17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
+            {project.link && (
+              <span className="text-stone group-hover:text-amber mt-2 shrink-0 transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.25"
+                >
+                  <path d="M7 17 17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            )}
           </div>
 
           <p className="pretty mt-6 max-w-2xl leading-relaxed text-sand">

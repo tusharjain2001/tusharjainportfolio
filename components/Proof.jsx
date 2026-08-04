@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { achievements, badges } from "@/lib/data";
 import { reveal } from "@/lib/motion";
+import Badge from "./Badge";
 import Counter from "./Counter";
 
 /**
@@ -62,13 +63,7 @@ export default function Proof() {
           className="hairline mt-16 flex flex-wrap gap-x-3 gap-y-3 border-t pt-10"
         >
           {badges.map((b) => (
-            <li
-              key={b}
-              className="hairline text-sand flex items-center gap-2.5 rounded-full border px-4 py-2 text-xs"
-            >
-              <span className="bg-amber h-1 w-1 shrink-0 rounded-full" />
-              {b}
-            </li>
+            <Badge key={b.label} label={b.label} icon={b.icon} />
           ))}
         </motion.ul>
       </div>

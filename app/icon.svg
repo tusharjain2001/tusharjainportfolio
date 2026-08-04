@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- TJ monogram. The letters are geometry rather than text, so there's no
+       font to load and the mark is identical in a browser tab and on a home
+       screen. Stems are 7/64 wide — heavy enough to hold up rasterised at
+       16px, where anything finer greys out. -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e0803a" />
+      <stop offset="1" stop-color="#c25a2e" />
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#tile)" />
+
+  <g fill="#0e0d0b">
+    <rect x="9" y="15" width="24" height="7" rx="1.5" />
+    <rect x="17.5" y="15" width="7" height="34" rx="1.5" />
+    <!-- J: stem down to the bowl, round the bottom, back up inside. The bowl
+         radius has to clear the stem width or the counter closes up. -->
+    <path d="M48 15 H55 V38 A10 10 0 0 1 35 38 H42 A3 3 0 0 0 48 38 Z" />
+  </g>
+</svg>
