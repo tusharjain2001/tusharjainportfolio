@@ -36,7 +36,6 @@ function Card({ project, index }) {
         {...(linked
           ? { href: project.link, target: "_blank", rel: "noopener noreferrer" }
           : {})}
-        data-cursor={linked ? "hover" : undefined}
         className="trace-border group hairline bg-ink-2 relative flex h-full flex-col overflow-hidden rounded-xl border"
       >
         {/* 2:1 to match the captures. Anything squarer crops the sides and

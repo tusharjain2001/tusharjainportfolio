@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import CustomCursor from "@/components/CustomCursor";
 import Loader from "@/components/Loader";
 import Hero from "@/components/Hero";
 import Proof from "@/components/Proof";
@@ -9,12 +8,12 @@ import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ContactModal from "@/components/ContactModal";
 
 export default function Home() {
   return (
     <main className="relative">
       <Loader />
-      <CustomCursor />
       <Navbar />
       <Hero />
       <Proof />
@@ -33,6 +32,8 @@ export default function Home() {
         <Contact />
         <Footer />
       </div>
+
+      <ContactModal />
     </main>
   );
 }

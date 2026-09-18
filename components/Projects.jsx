@@ -13,7 +13,6 @@ function Project({ project, index }) {
   return (
     <motion.article
       {...reveal({ y: 36, rotate: 6, duration: 0.85, delay: index * 0.08 })}
-      data-cursor="hover"
       className="group hairline relative border-t last:border-b"
     >
       {/* warm wash rises on hover */}

@@ -72,13 +72,6 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover { background: #4d4437; }
 
-@media (pointer: fine) {
-  body.has-cursor,
-  body.has-cursor a,
-  body.has-cursor button {
-    cursor: none;
-  }
-}
 
 /* ---------------------------------------------------------------
    Typography
