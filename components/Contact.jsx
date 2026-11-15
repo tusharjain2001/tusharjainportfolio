@@ -34,7 +34,7 @@ export default function Contact() {
       id="contact"
       className="relative mx-auto max-w-7xl px-6 py-20 md:py-24"
     >
-      <SectionHeading index="05 / Contact" title="Let’s build" accent="something" />
+      <SectionHeading index="06 / Contact" title="Let’s build" accent="something" />
 
       <div className="grid gap-14 lg:grid-cols-12">
         <motion.div
@@ -64,13 +64,6 @@ export default function Contact() {
               {copied ? "Copied to clipboard" : "Click to copy"}
             </span>
           </p>
-
-          <a
-            href={`tel:${profile.phone.replace(/\s/g, "")}`}
-            className="text-sand hover:text-bone mt-6 inline-block text-sm transition-colors duration-300"
-          >
-            <span className="u-link">{profile.phone}</span>
-          </a>
 
           {/* freelance standing — the part a prospective client actually wants */}
           <div className="hairline mt-14 max-w-xl border-t pt-8">

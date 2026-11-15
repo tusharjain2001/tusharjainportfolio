@@ -71,7 +71,9 @@ export default function Navbar() {
             <span className="bg-amber h-1 w-1 rounded-full transition-transform duration-500 group-hover:scale-150" />
           </a>
 
-          <ul className="hidden items-center gap-9 md:flex">
+          {/* seven links + name + button only just fit at md, so the gap
+              tightens there and opens back up from lg */}
+          <ul className="hidden items-center gap-6 md:flex lg:gap-9">
             {navLinks.map((link) => {
               const isActive = active === link.href;
               return (

@@ -115,10 +115,9 @@ export default function Skills() {
     <section id="skills" className="relative py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading
-          index="04 / Toolkit"
+          index="05 / Toolkit"
           title="What I build"
           accent="with"
-          subtitle="A deliberately small stack — I'd rather know a few tools deeply than list twenty — and the work I get hired to do with it."
         />
 
         <motion.div {...reveal({ y: 24, rotate: 8, duration: 0.8 })}>

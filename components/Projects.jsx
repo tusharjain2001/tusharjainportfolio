@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { endorsements, freelance, projects } from "@/lib/data";
+import { projects } from "@/lib/data";
 import { reveal } from "@/lib/motion";
 import SectionHeading from "./SectionHeading";
 import WorkIndex from "./WorkIndex";
@@ -34,12 +34,17 @@ function Project({ project, index }) {
 
       <div className="relative grid gap-8 py-12 md:grid-cols-12 md:gap-10 md:py-14">
         {/* rail */}
-        <div className="flex items-baseline gap-4 md:col-span-3 md:flex-col md:gap-2">
+        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 md:col-span-3 md:flex-col md:gap-2">
           <span className="eyebrow group-hover:text-amber transition-colors duration-500">
             ({String(index + 1).padStart(2, "0")})
           </span>
           <span className="text-xs text-stone">{project.year}</span>
           <span className="text-xs text-stone md:mt-1">{project.role}</span>
+          {project.status && (
+            <span className="text-stone/60 text-xs italic">
+              {project.status}
+            </span>
+          )}
         </div>
 
         {/* body */}
@@ -116,37 +121,6 @@ export default function Projects() {
       </div>
 
       <WorkIndex projects={rest} />
-
-      {/* Client-selected traits, not self-assessment — worth more than
-          anything I could write about myself here. */}
-      <motion.div {...reveal({ y: 24, rotate: 6 })} className="mt-20">
-        <p className="eyebrow">What clients said afterwards</p>
-
-        <ul className="mt-7 flex flex-wrap gap-x-3 gap-y-3">
-          {endorsements.map((e) => (
-            <li
-              key={e.label}
-              className="hairline text-sand hover:border-amber/40 hover:text-bone rounded-full border px-4 py-2 text-xs transition-colors duration-300"
-            >
-              {e.label}
-              {e.count > 1 && (
-                <span className="text-amber ml-1.5">×{e.count}</span>
-              )}
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href={freelance.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-stone hover:text-sand mt-7 inline-block text-xs transition-colors duration-300"
-        >
-          <span className="u-link">
-            Selected by clients on completed {freelance.platform} contracts
-          </span>
-        </a>
-      </motion.div>
     </section>
   );
 }

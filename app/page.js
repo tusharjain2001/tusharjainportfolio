@@ -5,6 +5,7 @@ import Proof from "@/components/Proof";
 import About from "@/components/About";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
+import Reviews from "@/components/Reviews";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -28,6 +29,7 @@ export default function Home() {
         <About />
         <Experience />
         <Projects />
+        <Reviews />
         <Skills />
         <Contact />
         <Footer />
